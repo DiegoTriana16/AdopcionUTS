@@ -1,6 +1,7 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {screen} from "../utils"
 import {FormularioScreen} from "../screens/formulario/FormularioScreen"
+import { NuevoFormularioScreen } from "../screens/formulario/nuevoFormulario"
 
 const Stack = createNativeStackNavigator();
 
