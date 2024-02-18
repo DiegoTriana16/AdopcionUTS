@@ -3,8 +3,8 @@ import { screen } from "../utils";
 import { CuentaScreen } from "../screens/cuenta/CuentaScreen";
 import { LogginScreen } from "../screens/cuenta/loginScreen";
 import { RegisterScreen } from "../screens/cuenta/registerScreen";
-import { AnimalStack } from "./animalesStack";
 import DetailsScreen from "../screens/animales/DetailsScreen";
+import DrawerNavigation from "./drawer/DrawerNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,8 +33,8 @@ export function CuentaStack() {
         options={{
           headerShown: false,
         }}
-        name="animalsStack"
-        component={AnimalStack}
+        name="DrawerNavigation"
+        component={DrawerNavigation}
       />
       <Stack.Screen name="detailsScreen" component={DetailsScreen} />
     </Stack.Navigator>

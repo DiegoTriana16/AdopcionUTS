@@ -5,17 +5,17 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import "react-native-gesture-handler";
 import { CuentaStack } from "./src/navigation/CuentaStack";
 import AppContext from "./src/context/AppContext";
-
-const Drawer = createDrawerNavigator();
+import AnimalsContext from "./src/context/AnimalsContext";
 
 LogBox.ignoreAllLogs();
 
 export default function App() {
-  const Drawer = createDrawerNavigator();
   return (
     <AppContext>
       <NavigationContainer>
-        <CuentaStack />        
+        <AnimalsContext>
+          <CuentaStack />
+        </AnimalsContext>
       </NavigationContainer>
       <Toast />
     </AppContext>
