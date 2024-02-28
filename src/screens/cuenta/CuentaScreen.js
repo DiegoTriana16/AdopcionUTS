@@ -10,10 +10,11 @@ export function CuentaScreen() {
   const [hasLogged, setHasLogged] = useState(null)
 
   useEffect(() => {
-      const auth = getAuth();
-      onAuthStateChanged(auth, (user)=>{
-         setHasLogged(user ? true : false);
-      });
+      // const auth = getAuth();
+      // onAuthStateChanged(auth, (user)=>{
+      //     setHasLogged(user ? true : false);
+      // });
+      setHasLogged(false);
   }, []);
 
   if (hasLogged === null) {

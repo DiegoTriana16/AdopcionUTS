@@ -10,11 +10,10 @@ import { initialValues, validationSchema } from "./LoginForm.data";
 import { styles } from "./LoginForm.Style";
 import { useUserContext } from "../../../context/AppContext";
 
-
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
-  const {saveUser} = useUserContext()
+  const { saveUser } = useUserContext();
 
   const showHidenPassword = () => setShowPassword((prevState) => !prevState);
 
@@ -25,26 +24,22 @@ export function LoginForm() {
     onSubmit: async (formValue) => {
       try {
         const auth = getAuth();
-        const user = await signInWithEmailAndPassword(
-          auth,
-          formValue.email,
-          formValue.password
-        );
-        saveUser(user)
-        navigation.navigate('animalsStack');
+        const user = await signInWithEmailAndPassword(auth, formValue.email, formValue.password);
+        saveUser(user);
+        navigation.navigate("DrawerNavigation");
       } catch (error) {
         Toast.show({
           type: "error",
           position: "bottom",
-          text1: "credenciales no validas",
+          text1: "credenciales no validas"
         });
         console.log(error);
       }
-    },
+    }
   });
 
-  const goToRegister=() =>{
-    navigation.navigate('animalsStack')
+  const goToRegister = () => {
+    navigation.navigate("DrawerNavigation");
   };
 
   return (
@@ -52,11 +47,7 @@ export function LoginForm() {
       <Input
         placeholder="correo electronico"
         containerStyle={styles.input}
-        rightIcon=<Icon
-          type="material-community"
-          name="at"
-          iconStyle={styles.icon}
-        />
+        rightIcon={<Icon type="material-community" name="at" iconStyle={styles.icon} />}
         onChangeText={(text) => formik.setFieldValue("email", text)}
         errorMessage={formik.errors.email}
       ></Input>
@@ -64,12 +55,14 @@ export function LoginForm() {
         placeholder="contraseña"
         containerStyle={styles.input}
         secureTextEntry={showPassword ? false : true}
-        rightIcon=<Icon
-          type="material-community"
-          name={showPassword ? "eye-off-outline" : "eye-outline"}
-          iconStyle={styles.icon}
-          onPress={showHidenPassword}
-        />
+        rightIcon={
+          <Icon
+            type="material-community"
+            name={showPassword ? "eye-off-outline" : "eye-outline"}
+            iconStyle={styles.icon}
+            onPress={showHidenPassword}
+          />
+        }
         onChangeText={(text) => formik.setFieldValue("password", text)}
         errorMessage={formik.errors.password}
       ></Input>

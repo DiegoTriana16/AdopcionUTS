@@ -1,20 +1,16 @@
-import React from "react";
 import {
   Text,
   ImageBackground,
   SafeAreaView,
   StatusBar,
   View,
-  Image,
-  StyleSheet,
+  StyleSheet
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import COLORS from "../../const/colors";
-import { useUserContext } from "../../context/AppContext";
 
-const DetailsScreen = ({ navigation, route }) => {
+const DetailsScreen = ({ route }) => {
   const pet = route.params;
-  const { user } = useUserContext()
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -22,72 +18,50 @@ const DetailsScreen = ({ navigation, route }) => {
       <View style={{ height: 400, backgroundColor: COLORS.background }}>
         <ImageBackground
           resizeMode="contain"
-          source={pet?.image}
+          source={{ uri: pet?.foto }}
           style={{
             height: 280,
-            top: 20,
+            top: 20
           }}
-        >
-          {/* Render  Header */}
-          <View style={style.header}>
-            <Icon
-              name="arrow-left"
-              size={28}
-              color={COLORS.dark}
-              onPress={navigation.goBack}
-            />
-            <Icon name="dots-vertical" size={28} color={COLORS.dark} />
-          </View>
-        </ImageBackground>
+        ></ImageBackground>
 
         <View style={style.detailsContainer}>
-          {/* Pet name and gender icon */}
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <Text
-              style={{ fontSize: 20, color: COLORS.dark, fontWeight: "bold" }}
-            >
-              {pet.Nombre}
+          
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <Text style={{ fontSize: 20, color: COLORS.dark, fontWeight: "bold" }}>
+              {pet.nombre}
             </Text>
             <Icon name="gender-male" size={25} color={COLORS.grey} />
           </View>
 
-          {/* Render Pet type and age */}
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
-              marginTop: 5,
+              marginTop: 5
             }}
           >
-            <Text style={{ fontSize: 12, color: COLORS.dark }}>{pet.Tipo}</Text>
-            <Text style={{ fontSize: 13, color: COLORS.dark }}>{pet.Edad}</Text>
+            <Text style={{ fontSize: 12, color: COLORS.dark }}>{pet.tipo}</Text>
+            <Text style={{ fontSize: 13, color: COLORS.dark }}>{pet.edad}</Text>
           </View>
 
-          {/* Render location and icon */}
           <View style={{ marginTop: 5, flexDirection: "row" }}>
             <Icon name="map-marker" color={COLORS.primary} size={20} />
-            <Text style={{ fontSize: 14, color: COLORS.grey, marginLeft: 5 }}>
-              {pet.Ubicacion}
-            </Text>
+            <Text style={{ fontSize: 14, color: COLORS.grey, marginLeft: 5 }}>{pet.ubicacion}</Text>
           </View>
         </View>
       </View>
 
-      {/* Comment container */}
       <View style={{ marginTop: 80, justifyContent: "space-between", flex: 1 }}>
+        
         <View>
-          {/* Render user image , name and date */}
           <View style={{ flexDirection: "row", paddingHorizontal: 20 }}>
-            <Image
+            {/* <Image
               source={require("../../../assets/img/person.jpg")}
               style={{ height: 40, width: 40, borderRadius: 20 }}
             />
             <View style={{ flex: 1, paddingLeft: 10 }}>
-              <Text
-                style={{ color: COLORS.dark, fontSize: 12, fontWeight: "bold" }}
-              >
+              <Text style={{ color: COLORS.dark, fontSize: 12, fontWeight: "bold" }}>
                 JANE GARY
               </Text>
               <Text
@@ -95,32 +69,20 @@ const DetailsScreen = ({ navigation, route }) => {
                   color: COLORS.grey,
                   fontSize: 11,
                   fontWeight: "bold",
-                  marginTop: 2,
+                  marginTop: 2
                 }}
               >
                 Owner
               </Text>
-            </View>
-            <Text style={{ color: COLORS.grey, fontSize: 12 }}>
-              May 25, 2020
-            </Text>
+            </View> */}
+            {/* <Text style={{ color: COLORS.grey, fontSize: 12 }}>May 25, 2020</Text> */}
           </View>
-          <Text style={style.comment}>
-          {
-              JSON.stringify(user,null,2)
-            }
-          </Text>
+          <Text style={style.comment}>{pet.descripcion}.</Text>
         </View>
 
-        {/* Render footer */}
         <View style={style.footer}>
-          <View style={style.iconCon}>
-            <Icon name="heart-outline" size={22} color={COLORS.white} />
-          </View>
           <View style={style.btn}>
-            <Text style={{ color: COLORS.white, fontWeight: "bold" }}>
-              ADOPTION
-            </Text>
+            <Text style={{ color: COLORS.white, fontWeight: "bold" }}>ADOPTAR</Text>
           </View>
         </View>
       </View>
@@ -138,14 +100,14 @@ const style = StyleSheet.create({
     borderRadius: 18,
     elevation: 10,
     padding: 20,
-    justifyContent: "center",
+    justifyContent: "center"
   },
   comment: {
     marginTop: 10,
-    fontSize: 12.5,
+    fontSize: 14,
     color: COLORS.dark,
     lineHeight: 20,
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
   footer: {
     height: 100,
@@ -154,7 +116,7 @@ const style = StyleSheet.create({
     borderTopLeftRadius: 30,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
   },
   iconCon: {
     backgroundColor: COLORS.primary,
@@ -163,7 +125,7 @@ const style = StyleSheet.create({
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 15,
+    marginRight: 15
   },
   btn: {
     backgroundColor: COLORS.primary,
@@ -171,12 +133,12 @@ const style = StyleSheet.create({
     height: 50,
     borderRadius: 12,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   header: {
     flexDirection: "row",
     padding: 20,
-    justifyContent: "space-between",
-  },
+    justifyContent: "space-between"
+  }
 });
 export default DetailsScreen;
