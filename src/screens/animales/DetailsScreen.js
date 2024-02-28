@@ -4,12 +4,14 @@ import {
   SafeAreaView,
   StatusBar,
   View,
+  Pressable,
   StyleSheet
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import COLORS from "../../const/colors";
+import { screen } from "../../utils";
 
-const DetailsScreen = ({ route }) => {
+const DetailsScreen = ({ navigation,route }) => {
   const pet = route.params;
 
   return (
@@ -81,9 +83,9 @@ const DetailsScreen = ({ route }) => {
         </View>
 
         <View style={style.footer}>
-          <View style={style.btn}>
+          <Pressable onPress={()=>navigation.navigate(screen.formulario.nuevoFormulario,{pet})} style={style.btn}>
             <Text style={{ color: COLORS.white, fontWeight: "bold" }}>ADOPTAR</Text>
-          </View>
+          </Pressable>
         </View>
       </View>
     </SafeAreaView>

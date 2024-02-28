@@ -3,9 +3,11 @@ import HomeScreen from "../../screens/animales/HomeScreen";
 import {
   SimpleLineIcons,
   MaterialIcons,
+  FontAwesome5
 } from "@expo/vector-icons";
 import { Image, SafeAreaView, Text, View } from "react-native";
 import FormularioAnimal from "../../screens/Formulario/Form";
+import { FormularioScreen } from "../../screens/Formulario/FormularioScreen";
 
 
 
@@ -14,7 +16,7 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigation = () => {
   return (
     <Drawer.Navigator
-     
+    
       drawerContent={(props) => {
         return (
           <SafeAreaView>
@@ -87,15 +89,26 @@ const DrawerNavigation = () => {
         component={HomeScreen}
       />
       <Drawer.Screen
-        name="FormularioScreen"
+        name="AgregarScreen"
         options={{
           drawerLabel: "Agregar Mascota",
           title: "Agregar Mascota",
-          drawerIcon: () => <MaterialIcons name="timer" size={20} color="#808080" />
+          drawerIcon: () => <FontAwesome5 name="cat" size={24} color="black" />
         }}
         component={FormularioAnimal}
       />
+
+      <Drawer.Screen
+        name="FormularioScreen"
+        options={{
+          drawerLabel: "Listar Formulario",
+          title: "Listar Formulario",
+          drawerIcon: () => <MaterialIcons name="timer" size={20} color="#808080" />
+        }}
+        component={FormularioScreen}
+      />
     </Drawer.Navigator>
+    
   );
 };
 

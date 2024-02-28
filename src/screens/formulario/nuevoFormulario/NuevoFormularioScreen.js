@@ -6,7 +6,11 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import {Image} from "react-native-elements"
 
 
-export function NuevoFormularioScreen ()  {
+export function NuevoFormularioScreen ({route})  {
+
+  const pet = route.params;
+  console.log(pet)
+
   return (
     <KeyboardAwareScrollView>
      <Image source = {require("../../../../assets/img/gatomega.jpg")} style= {styles.image}/>

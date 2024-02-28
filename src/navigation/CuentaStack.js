@@ -4,7 +4,7 @@ import { CuentaScreen } from "../screens/cuenta/CuentaScreen";
 import { LogginScreen } from "../screens/cuenta/loginScreen";
 import { RegisterScreen } from "../screens/cuenta/registerScreen";
 import DetailsScreen from "../screens/animales/DetailsScreen";
-import { NuevoFormularioScreen } from "../screens/formulario/nuevoFormulario"
+import { NuevoFormularioScreen } from "../screens/Formulario/nuevoFormulario/NuevoFormularioScreen"
 import DrawerNavigation from "./drawer/DrawerNavigation";
 
 const Stack = createNativeStackNavigator();
