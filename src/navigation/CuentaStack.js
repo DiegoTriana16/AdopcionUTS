@@ -4,6 +4,7 @@ import { CuentaScreen } from "../screens/cuenta/CuentaScreen";
 import { LogginScreen } from "../screens/cuenta/loginScreen";
 import { RegisterScreen } from "../screens/cuenta/registerScreen";
 import DetailsScreen from "../screens/animales/DetailsScreen";
+import { NuevoFormularioScreen } from "../screens/formulario/nuevoFormulario"
 import DrawerNavigation from "./drawer/DrawerNavigation";
 
 const Stack = createNativeStackNavigator();
@@ -35,6 +36,11 @@ export function CuentaStack() {
         }}
         name="DrawerNavigation"
         component={DrawerNavigation}
+      />
+      <Stack.Screen
+        name={screen.formulario.nuevoFormulario}
+        component={NuevoFormularioScreen}
+        options={{ title: "nuevo formulario" }}
       />
       <Stack.Screen options={{
           title: "Detalle"
