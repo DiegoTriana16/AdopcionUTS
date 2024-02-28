@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import COLORS from '../../const/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import pets from '../../const/pets';
 
 const { height } = Dimensions.get('window');
 const petCategories = [
@@ -29,7 +28,6 @@ const Card = ({ pet, navigation }) => {
       activeOpacity={0.8}
       onPress={() => navigation.navigate('AnimalesScreen', pet)}>
       <View style={styles.cardContainer}>
-        {/* Render the card image */}
         <View style={styles.cardImageContainer}>
           <Image
             source={pet.image}
@@ -41,9 +39,7 @@ const Card = ({ pet, navigation }) => {
           />
         </View>
 
-        {/* Render all the card details here */}
         <View style={styles.cardDetailsContainer}>
-          {/* Name and gender icon */}
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text
@@ -53,7 +49,6 @@ const Card = ({ pet, navigation }) => {
             <Icon name="gender-male" size={22} color={COLORS.grey} />
           </View>
 
-          {/* Render the age and type */}
           <Text style={{ fontSize: 12, marginTop: 5, color: COLORS.dark }}>
             {pet?.type}
           </Text>
@@ -61,7 +56,6 @@ const Card = ({ pet, navigation }) => {
             {pet?.age}
           </Text>
 
-          {/* Render distance and the icon */}
           <View style={{ marginTop: 5, flexDirection: 'row' }}>
             <Icon name="map-marker" color={COLORS.primary} size={18} />
             <Text style={{ fontSize: 12, color: COLORS.grey, marginLeft: 5 }}>

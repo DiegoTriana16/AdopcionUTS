@@ -1,34 +1,46 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import {
   Dimensions,
   SafeAreaView,
   View,
   Image,
-  TextInput,
   Text,
   TouchableOpacity,
   FlatList,
   StyleSheet,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 import COLORS from "../../const/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useAnimalsContext } from "../../context/AnimalsContext";
 const { height } = Dimensions.get("window");
-const petCategories = [
-  { name: "CATS", icon: "cat" },
-  { name: "DOGS", icon: "dog" },
-  { name: "BIRDS", icon: "ladybug" },
-  { name: "BUNNIES", icon: "rabbit" },
-];
+
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { initFirebase } from "../../utils/firebase";
-
+import { useFocusEffect } from "@react-navigation/native";
 const db = getFirestore(initFirebase);
 
+const petCategories = [
+  { name: "Gato", icon: "cat" },
+  { name: "Perro", icon: "dog" },
+  { name: "Ave", icon: "ladybug" },
+  { name: "Conejo", icon: "rabbit" }
+];
 const HomeScreen = ({ navigation }) => {
-  const [selectedCategoryIndex, setSeletedCategoryIndex] = React.useState(0);
-  const [filteredPets, setFilteredPets] = React.useState([]);
-  const [Lista, setLista] = React.useState([]);
+  const [Lista, setLista] = useState([]);
+  const [ListaFilter, setListaFilter] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState();
+  const { updateData, isData, resetData } = useAnimalsContext();
+
+  useFocusEffect(
+    useCallback(() => {
+      updateData(true);
+
+      return () => {
+        updateData(false);
+      };
+    }, [])
+  );
 
   useEffect(() => {
     const getLista = async () => {
@@ -36,101 +48,87 @@ const HomeScreen = ({ navigation }) => {
         const querySnapshot = await getDocs(collection(db, "Animales"));
         const docs = [];
         querySnapshot.forEach((doc) => {
-          const { Nombre, Edad, Genero, Raza, Ubicacion, Descripcion, Tipo } =
-            doc.data();
+          const {
+            id,
+            nombre,
+            edad,
+            genero,
+            raza,
+            ubicacion,
+            descripcion,
+            tipo,
+            disponibilidad,
+            foto
+          } = doc.data();
           docs.push({
-            id: doc.id,
-            Nombre,
-            Edad,
-            Genero,
-            Raza,
-            Ubicacion,
-            Descripcion,
-            Tipo,
+            id,
+            foto,
+            nombre,
+            edad,
+            raza,
+            ubicacion,
+            genero,
+            descripcion,
+            tipo,
+            disponibilidad
           });
         });
         setLista(docs);
+        setListaFilter(docs);
       } catch (error) {
         console.log(error);
       }
     };
     getLista();
-  }, []);
+  }, [isData]);
 
-  const fliterPet = (index) => {
-    const currentPets = Lista.filter(
-      (item) => item?.Tipo?.toLowerCase() == petCategories[index].name
-    )[0]?.pets;
-    setFilteredPets(currentPets);
+  const handleFilter = (text) => {
+    if (text) {
+      const filteredList = Lista.filter((item) =>
+        item.tipo?.toLowerCase().includes(text.toLowerCase())
+      );
+      setListaFilter(filteredList);
+    } else {
+      setListaFilter(Lista);
+    }
   };
-
-  React.useEffect(() => {
-    fliterPet(0);
-  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, color: COLORS.white }}>
       <View style={style.mainContainer}>
-        {/* Render the search inputs and icons */}
-        <View style={style.searchInputContainer}>
-          <Icon name="magnify" size={24} color={COLORS.grey} />
-          <TextInput
-            placeholderTextColor={COLORS.grey}
-            placeholder="Search pet to adopt"
-            style={{ flex: 1 }}
-          />
-          <Icon name="sort-ascending" size={24} color={COLORS.grey} />
-        </View>
-
-        {/* Render all the categories */}
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 20,
+            justifyContent: "space-between"
           }}
         >
-          {petCategories.map((item, index) => (
-            <View key={"pet" + index} style={{ alignItems: "center" }}>
+          {petCategories.map(({ name, icon }) => (
+            <View key={name} style={{ alignItems: "center" }}>
               <TouchableOpacity
                 onPress={() => {
-                  setSeletedCategoryIndex(index);
-                  fliterPet(index);
+                  handleFilter(name);
+                  setSelectedCategory(name)
                 }}
                 style={[
                   style.categoryBtn,
                   {
-                    backgroundColor:
-                      selectedCategoryIndex == index
-                        ? COLORS.primary
-                        : COLORS.white,
-                  },
+                    backgroundColor: selectedCategory == name ? COLORS.primary : COLORS.white
+                  }
                 ]}
               >
-                <Icon
-                  name={item.icon}
-                  size={30}
-                  color={
-                    selectedCategoryIndex == index
-                      ? COLORS.white
-                      : COLORS.primary
-                  }
-                />
+                <Icon name={icon} size={30} color={selectedCategory == name ? COLORS.white : COLORS.primary} />
               </TouchableOpacity>
-              <Text style={style.categoryBtnName}>{item.name}</Text>
+              <Text style={style.categoryBtnName}>{name}</Text>
             </View>
           ))}
         </View>
 
-        {/* Render the cards with flatlist */}
         <View style={{ marginTop: 20 }}>
-          {Lista.length > 0 ? (
+          {ListaFilter.length > 0 ? (
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={Lista}
-              renderItem={({ item }) => (
-                <Card pet={item} navigation={navigation} />
-              )}
+              data={ListaFilter}
+              renderItem={({ item }) => <Card pet={item} navigation={navigation} />}
             />
           ) : (
             <ActivityIndicator size="large" />
@@ -143,54 +141,58 @@ const HomeScreen = ({ navigation }) => {
 
 const Card = ({ pet, navigation }) => {
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      onPress={() => navigation.navigate("detailsScreen", pet)}
-    >
+    <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate("detailsScreen", pet)}>
       <View style={style.cardContainer}>
-        {/* Render the card image */}
+
         <View style={style.cardImageContainer}>
           <Image
-            source={pet.image}
+            source={{ uri: pet.foto }}
             style={{
               width: "100%",
               height: "100%",
-              resizeMode: "contain",
+              resizeMode: "contain"
             }}
           />
         </View>
 
-        {/* Render all the card details here */}
         <View style={style.cardDetailsContainer}>
-          {/* Name and gender icon */}
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <Text
-              style={{ fontWeight: "bold", color: COLORS.dark, fontSize: 20 }}
+              style={{
+                fontWeight: "bold",
+                color: COLORS.dark,
+                fontSize: 20,
+                textTransform: "capitalize"
+              }}
             >
-              {pet?.Nombre}
+              {pet?.nombre}
             </Text>
-            {pet.Genero === "Hembra" ? (
-              <Icon name="gender-male" size={22} color={COLORS.grey} />
+            {pet.genero === "femenino" ? (
+              <Icon name="gender-male" size={22} color="#cf69bf" />
             ) : (
-              <Icon name="gender-female" size={22} color={COLORS.grey} />
+              <Icon name="gender-female" size={22} color="#5087e6" />
             )}
           </View>
 
-          {/* Render the age and type */}
-          <Text style={{ fontSize: 12, marginTop: 5, color: COLORS.dark }}>
-            {pet?.Tipo}
+          <Text
+            style={{ fontSize: 12, marginTop: 5, color: COLORS.dark, textTransform: "capitalize" }}
+          >
+            {pet?.tipo}
           </Text>
-          <Text style={{ fontSize: 10, marginTop: 5, color: COLORS.grey }}>
-            {pet?.Edad}
-          </Text>
+          <Text style={{ fontSize: 10, marginTop: 5, color: COLORS.grey }}>{pet?.edad}</Text>
 
-          {/* Render distance and the icon */}
           <View style={{ marginTop: 5, flexDirection: "row" }}>
             <Icon name="map-marker" color={COLORS.primary} size={18} />
-            <Text style={{ fontSize: 12, color: COLORS.grey, marginLeft: 5 }}>
-              pet?.Ubicacion
+            <Text
+              style={{
+                fontSize: 12,
+                color: COLORS.grey,
+                marginLeft: 5,
+                textTransform: "capitalize"
+              }}
+            >
+              {pet?.ubicacion}
             </Text>
           </View>
         </View>
@@ -204,17 +206,16 @@ const style = StyleSheet.create({
     padding: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "center"
   },
   mainContainer: {
     flex: 1,
     backgroundColor: COLORS.light,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    marginTop: 20,
     paddingHorizontal: 20,
     paddingVertical: 40,
-    minHeight: height,
+    minHeight: height
   },
   searchInputContainer: {
     height: 50,
@@ -223,25 +224,26 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   categoryBtn: {
     height: 50,
     width: 50,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
+    borderRadius: 10
   },
   categoryBtnName: {
     color: COLORS.dark,
     fontSize: 10,
     marginTop: 5,
     fontWeight: "bold",
+    textTransform: "capitalize"
   },
   cardContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 20
   },
   cardDetailsContainer: {
     height: 120,
@@ -250,13 +252,13 @@ const style = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     padding: 20,
-    justifyContent: "center",
+    justifyContent: "center"
   },
   cardImageContainer: {
     height: 150,
     width: 140,
     backgroundColor: COLORS.background,
-    borderRadius: 20,
-  },
+    borderRadius: 20
+  }
 });
 export default HomeScreen;
