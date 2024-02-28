@@ -16,7 +16,8 @@ const cuentaStack = {
 
 const formularioStack = {
     tab: "formularioTab",
-    formulario: "formulario"
+    formulario: "formulario",
+    nuevoFormulario: "nuevoFormulario"
 }
 
 const favoritesStack = {

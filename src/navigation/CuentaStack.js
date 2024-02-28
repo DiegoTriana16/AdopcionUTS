@@ -5,6 +5,7 @@ import { LogginScreen } from "../screens/cuenta/loginScreen";
 import { RegisterScreen } from "../screens/cuenta/registerScreen";
 import { AnimalStack } from "./animalesStack";
 import DetailsScreen from "../screens/animales/DetailsScreen";
+import { NuevoFormularioScreen } from "../screens/formulario/nuevoFormulario"
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,11 @@ export function CuentaStack() {
         }}
         name="animalsStack"
         component={AnimalStack}
+      />
+      <Stack.Screen
+        name={screen.formulario.nuevoFormulario}
+        component={NuevoFormularioScreen}
+        options={{ title: "nuevo formulario" }}
       />
       <Stack.Screen name="detailsScreen" component={DetailsScreen} />
     </Stack.Navigator>

@@ -3,6 +3,8 @@ import { View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { useFormik } from "formik";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { collection, getDocs, where, query, addDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { screen } from "../../../utils";
 import { initialValues, validationSchema } from "./RegisterForm.data";
@@ -21,6 +23,33 @@ export function RegisterForm() {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
+
+      
+      const emailAvailable = await isEmailAvailable(formValue.email);
+      const cedulaAvailable = await isCedulaAvailable(formValue.Cedula);
+
+      console.log(emailAvailable);
+      console.log(emailAvailable);
+
+
+      if (!emailAvailable) {
+        Toast.show({
+          type: "error",
+          position: "bottom",
+          text1: "Correo electrónico ya registrado.",
+        });
+        return;
+      }
+
+      if (!cedulaAvailable) {
+        Toast.show({
+          type: "error",
+          position: "bottom",
+          text1: "Cédula ya registrada.",
+        });
+        return;
+      }
+
       try {
         const auth = getAuth();
         await createUserWithEmailAndPassword(
@@ -28,6 +57,16 @@ export function RegisterForm() {
           formValue.email,
           formValue.password
         );
+
+        const firestore = getFirestore();
+        const userRef = collection(firestore, "users");
+        await addDoc(userRef, {
+          nombre: formValue.nombre,
+          cedula: formValue.Cedula,
+          telefono: formValue.telefono,
+          email: formValue.email,
+          rol: "user"
+        });
         navigation.navigate(screen.cuenta.cuenta);
       } catch (error) {
         Toast.show({
@@ -40,11 +79,28 @@ export function RegisterForm() {
     },
   });
 
+  const isEmailAvailable = async (email) => {
+    const firestore = getFirestore();
+    const usersRef = collection(firestore, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.empty;
+  };
+
+  
+  const isCedulaAvailable = async (cedula) => {
+    const firestore = getFirestore();
+    const usersRef = collection(firestore, "users");
+    const q = query(usersRef, where("cedula", "==", cedula));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.empty;
+  };
+
   return (
     <View style={styles.content}>
 
       <Input
-        placeholder="Nombre"
+        placeholder="Nombre Completo"
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
@@ -52,6 +108,18 @@ export function RegisterForm() {
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("nombre", text)}
+        errorMessage={formik.errors.nombre}
+      />
+      
+      <Input
+        placeholder="Cedula"
+        containerStyle={styles.input}
+        rightIcon=<Icon
+          type="material-community"
+          name="numeric"
+          iconStyle={styles.icon}
+        />
+        onChangeText={(text) => formik.setFieldValue("Cedula", text)}
         errorMessage={formik.errors.nombre}
       />
 
