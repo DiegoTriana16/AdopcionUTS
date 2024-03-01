@@ -11,10 +11,10 @@ import { useNavigation } from "@react-navigation/native"
 import { screen } from '../../../utils';
 import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs } from 'firebase/firestore'
 
-export function FormularioAdop() {
+export function FormularioAdop(props) {
 
   const navigation = useNavigation();
-
+  const { pet } = props;
   const goToFormulario = () => {
     navigation.navigate(screen.formulario.formulario)
   }
@@ -80,7 +80,7 @@ export function FormularioAdop() {
         formValue.email = datosUsuario.email;
 
         console.log(formValue)
-        const dataFirebase = { ...formValue, isValid: true, estado: 'progress', mascota: '' };
+        const dataFirebase = { ...formValue, isValid: true, estado: 'progress', ...pet };
         addDoc(collection(db, 'formularioTest'), dataFirebase);
         console.log(dataFirebase)
         console.log('guardado con exito')
