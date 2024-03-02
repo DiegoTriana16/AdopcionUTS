@@ -78,6 +78,7 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#000", // Puedes ajustar el color según tu preferencia
         marginBottom: 15,
+        textAlign: "center",
       },
       imageContainer: {
         alignItems: 'center',

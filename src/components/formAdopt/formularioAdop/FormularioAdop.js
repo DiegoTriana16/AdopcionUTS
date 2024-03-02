@@ -60,7 +60,7 @@ export function FormularioAdop(props) {
         },
         {
           text: "Continuar",
-          onPress: () => formik.handleSubmit(), // Llama a la función de manejo del envío del formulario
+          onPress: () => formik.handleSubmit(),
         },
       ]
     );
@@ -80,7 +80,7 @@ export function FormularioAdop(props) {
         formValue.email = datosUsuario.email;
 
         console.log(formValue)
-        const dataFirebase = { ...formValue, isValid: true, estado: 'progress', ...pet };
+        const dataFirebase = { ...formValue, isValid: true, estado: 'progress', mascota:pet};
         addDoc(collection(db, 'formularioTest'), dataFirebase);
         console.log(dataFirebase)
         console.log('guardado con exito')

@@ -60,7 +60,7 @@ export function ListaFormulario() {
         onRequestClose={() => setModalVisible(false)}
       >
         <FormularioDetalle
-          formulario={formularioSeleccionado}
+          formularioSeleccionado={formularioSeleccionado}
           closeModal={() => setModalVisible(false)}
         />
       </Modal>
