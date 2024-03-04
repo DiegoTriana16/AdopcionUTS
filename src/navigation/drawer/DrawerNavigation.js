@@ -8,7 +8,7 @@ import {
 import { Image, SafeAreaView, Text, View } from "react-native";
 import FormularioAnimal from "../../screens/Formulario/Form";
 import { FormularioScreen } from "../../screens/Formulario/FormularioScreen";
-
+import {CuentaScreen} from "../../screens/cuenta/CuentaScreen"
 
 
 const Drawer = createDrawerNavigator();
@@ -106,6 +106,15 @@ const DrawerNavigation = () => {
           drawerIcon: () => <MaterialIcons name="timer" size={20} color="#808080" />
         }}
         component={FormularioScreen}
+      />
+      <Drawer.Screen
+        name="Cuenta"
+        options={{
+          drawerLabel: "Cuenta",
+          title: "Cuenta",
+          drawerIcon: () => <MaterialIcons name="timer" size={20} color="#808080" />
+        }}
+        component={CuentaScreen}
       />
     </Drawer.Navigator>
     

@@ -22,7 +22,7 @@ export function FormularioScreen() {
         </Text>
         <ListaFormulario />
         <Button
-          title="Nuevo Adopcion"
+          title="Nueva Adopcion"
           onPress={goToNuevoFormulario}
           buttonStyle={{ backgroundColor: '#3498db', borderRadius: 8, marginTop: 20 }}
           titleStyle={{ fontWeight: 'bold' }}
