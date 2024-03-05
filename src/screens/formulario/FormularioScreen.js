@@ -24,7 +24,7 @@ export function FormularioScreen() {
         <Button
           title="Nueva Adopcion"
           onPress={goToNuevoFormulario}
-          buttonStyle={{ backgroundColor: '#3498db', borderRadius: 8, marginTop: 20 }}
+          buttonStyle={{ backgroundColor: '#E05E5C', borderRadius: 8, marginTop: 20 }}
           titleStyle={{ fontWeight: 'bold' }}
         />
       </View>

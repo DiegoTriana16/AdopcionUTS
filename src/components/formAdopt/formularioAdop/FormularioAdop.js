@@ -9,7 +9,7 @@ import { getAuth } from "firebase/auth";
 import { initFirebase } from '../../../utils/firebase';
 import { useNavigation } from "@react-navigation/native"
 import { screen } from '../../../utils';
-import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs } from 'firebase/firestore'
+import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs, updateDoc } from 'firebase/firestore'
 
 export function FormularioAdop(props) {
 
@@ -80,10 +80,13 @@ export function FormularioAdop(props) {
         formValue.email = datosUsuario.email;
 
         console.log(formValue)
-        const dataFirebase = { ...formValue, isValid: true, estado: 'progress', mascota:pet};
-        addDoc(collection(db, 'formularioTest'), dataFirebase);
-        console.log(dataFirebase)
+        const dataFirebase = { ...formValue, isValid: true, estado: 'progress', mascota: pet };
+        const docRef = await addDoc(collection(db, 'formularioTest'), dataFirebase);
+        const nuevoFormularioId = docRef.id;
+        dataFirebase.formularioId = nuevoFormularioId;
+        await updateDoc(docRef, dataFirebase);
         console.log('guardado con exito')
+        console.log(dataFirebase)
         goToFormulario();
 
       } catch (error) {
