@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import { TraerImagen } from '../../../utils/traerImagen';
 import { styles } from './ListaFormulario.styles';
-import { ButtonGroup, Input, Button} from 'react-native-elements';
+import { ButtonGroup, Input, Button } from 'react-native-elements';
 import { useFormik } from "formik"
 import { initialValues, validationSchema } from "./formulario.data"
 
@@ -16,18 +16,20 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-
-        formValue.fechaRevision = new Date();
-
+        console.log('el valor magico es:')
         console.log(formValue)
-        const dataFirebase = { ...formValue, isValid: true, estado: 'En estudio', mascota: pet };
-        const docRef = await addDoc(collection(db, 'formularioTest'), dataFirebase);
-        const nuevoFormularioId = docRef.id;
-        dataFirebase.formularioId = nuevoFormularioId;
-        await updateDoc(docRef, dataFirebase);
-        console.log('guardado con exito')
-        console.log(dataFirebase)
-        goToFormulario();
+
+        /* formValue.fechaRevision = new Date();
+ 
+         console.log(formValue)
+         const dataFirebase = { ...formValue, isValid: true, estado: 'En estudio', mascota: pet };
+         const docRef = await addDoc(collection(db, 'formularioTest'), dataFirebase);
+         const nuevoFormularioId = docRef.id;
+         dataFirebase.formularioId = nuevoFormularioId;
+         await updateDoc(docRef, dataFirebase);
+         console.log('guardado con exito')
+         console.log(dataFirebase)
+         goToFormulario();*/
 
       } catch (error) {
         Toast.show({
@@ -40,7 +42,9 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
 
   });
 
-
+  const handleFormSubmit = useCallback(() => {
+    formik.handleSubmit();
+  }, [formik]);
 
 
 
@@ -50,7 +54,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
 
-          <Text style={styles.formularioTitle}>Formulario</Text>
+          <Text style={styles.formularioTitle}>Formulario de Adopcion</Text>
           <Text style={styles.formularioTitle}>{formularioSeleccionado?.mascota?.nombre}</Text>
           <View style={styles.imageContainer}>
             <TraerImagen uri={formularioSeleccionado?.mascota?.foto} />
@@ -122,7 +126,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
               placeholder="recomendaciones"
               containerStyle={styles.input}
               onChangeText={(text) => formik.setFieldValue("recomendaciones", text)}
-              errorMessage={formik.errors.direccion}
+              errorMessage={formik.errors.recomendaciones}
             />
 
             <Text style={styles.fieldLabel}>Observaciones:</Text>
@@ -130,26 +134,25 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
               placeholder="observaciones"
               containerStyle={styles.input}
               onChangeText={(text) => formik.setFieldValue("observaciones", text)}
-              errorMessage={formik.errors.direccion}
+              errorMessage={formik.errors.observaciones}
             />
           </View>
 
-        
 
-          <Button
-            title="Actualizar Formulario"
-            containerStyle={styles.btnContainer}
-            buttonStyle={styles.btn}
-            onPress={useFormik}
-            loading={formik.isSubmitting}
-          />
 
-          {/* Botón para cerrar el modal */}
+          <TouchableOpacity
+            style={styles.closeModalButton}
+            onPress={handleFormSubmit}
+          >
+            <Text style={styles.closeModalButtonText}>Actualizar Formulario</Text>
+          </TouchableOpacity>
+
+
           <TouchableOpacity
             style={styles.closeModalButton}
             onPress={closeModal}
           >
-            <Text style={styles.closeModalButtonText}>Cerrar Modal</Text>
+            <Text style={styles.closeModalButtonText}>Cerrar Formulario</Text>
           </TouchableOpacity>
         </View>
       </View>
