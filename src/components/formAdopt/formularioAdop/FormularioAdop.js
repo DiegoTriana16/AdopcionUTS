@@ -74,13 +74,14 @@ export function FormularioAdop(props) {
     onSubmit: async (formValue) => {
       try {
 
+        formValue.fecha = new Date();
         formValue.cedula = datosUsuario.cedula;
         formValue.nombreApellido = datosUsuario.nombre;
         formValue.celular = datosUsuario.telefono;
         formValue.email = datosUsuario.email;
 
         console.log(formValue)
-        const dataFirebase = { ...formValue, isValid: true, estado: 'progress', mascota: pet };
+        const dataFirebase = { ...formValue, isValid: true, estado: 'En estudio', mascota: pet };
         const docRef = await addDoc(collection(db, 'formularioTest'), dataFirebase);
         const nuevoFormularioId = docRef.id;
         dataFirebase.formularioId = nuevoFormularioId;

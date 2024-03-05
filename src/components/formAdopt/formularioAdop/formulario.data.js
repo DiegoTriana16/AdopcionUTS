@@ -21,7 +21,6 @@ export function initialValues() {
         permitenMascotas: false,
         familiarAlergico: false,
         experienciasMascotas: false,
-        fecha: 'prueba',
     };
 }
 

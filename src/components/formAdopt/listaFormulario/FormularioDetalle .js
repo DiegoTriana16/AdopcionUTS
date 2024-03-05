@@ -2,9 +2,47 @@ import React from 'react';
 import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import { TraerImagen } from '../../../utils/traerImagen';
 import { styles } from './ListaFormulario.styles';
-import { ButtonGroup, Input } from 'react-native-elements';
+import { ButtonGroup, Input, Button} from 'react-native-elements';
+import { useFormik } from "formik"
+import { initialValues, validationSchema } from "./formulario.data"
 
 const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
+
+  const estadosSolicitud = ['En estudio', 'Aprobado', 'Rechazado', 'Mascota no Disponible'];
+
+  const formik = useFormik({
+    initialValues: initialValues(),
+    validationSchema: validationSchema(),
+    validateOnChange: false,
+    onSubmit: async (formValue) => {
+      try {
+
+        formValue.fechaRevision = new Date();
+
+        console.log(formValue)
+        const dataFirebase = { ...formValue, isValid: true, estado: 'En estudio', mascota: pet };
+        const docRef = await addDoc(collection(db, 'formularioTest'), dataFirebase);
+        const nuevoFormularioId = docRef.id;
+        dataFirebase.formularioId = nuevoFormularioId;
+        await updateDoc(docRef, dataFirebase);
+        console.log('guardado con exito')
+        console.log(dataFirebase)
+        goToFormulario();
+
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          position: "bottom",
+          text1: "Error al guardar el formulario",
+        });
+      }
+    }
+
+  });
+
+
+
+
 
   const mascota = formularioSeleccionado.pet;
   return (
@@ -78,7 +116,33 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
             {/* Estado Solicitud */}
             <Text style={styles.fieldLabel}>Estado Solicitud:</Text>
             <Text style={styles.fieldValue}>{formularioSeleccionado?.estado}</Text>
+
+            <Text style={styles.fieldLabel}>recomendaciones:</Text>
+            <Input
+              placeholder="recomendaciones"
+              containerStyle={styles.input}
+              onChangeText={(text) => formik.setFieldValue("recomendaciones", text)}
+              errorMessage={formik.errors.direccion}
+            />
+
+            <Text style={styles.fieldLabel}>Observaciones:</Text>
+            <Input
+              placeholder="observaciones"
+              containerStyle={styles.input}
+              onChangeText={(text) => formik.setFieldValue("observaciones", text)}
+              errorMessage={formik.errors.direccion}
+            />
           </View>
+
+        
+
+          <Button
+            title="Actualizar Formulario"
+            containerStyle={styles.btnContainer}
+            buttonStyle={styles.btn}
+            onPress={useFormik}
+            loading={formik.isSubmitting}
+          />
 
           {/* Botón para cerrar el modal */}
           <TouchableOpacity
