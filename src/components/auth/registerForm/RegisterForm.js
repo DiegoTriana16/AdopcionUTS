@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { useFormik } from "formik";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs, where, query, addDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
@@ -52,11 +52,15 @@ export function RegisterForm() {
 
       try {
         const auth = getAuth();
-        await createUserWithEmailAndPassword(
+        const { user } = await createUserWithEmailAndPassword(
           auth,
           formValue.email,
           formValue.password
         );
+
+        await updateProfile(user, {
+          displayName: formValue.nombre,
+        });
 
         const firestore = getFirestore();
         const userRef = collection(firestore, "users");
