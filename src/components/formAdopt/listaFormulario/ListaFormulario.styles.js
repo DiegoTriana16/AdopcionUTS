@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 5,
         padding: 10,
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop:0,
+        marginBottom:0,
       },
       itemContainer: {
         flexDirection: 'row',
@@ -99,7 +99,18 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
       },
-
-
+      picker: {
+        height: 50,
+        width: '100%',
+        backgroundColor: '#fafafa',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#',
+        color: 'black',
+      },
+      pickerItem: {
+        color: 'black',
+        fontSize: 20,
+      },
     
 });

@@ -5,9 +5,9 @@ import { styles } from './ListaFormulario.styles';
 
 const FormularioItem = ({ formulario, onPress }) => {
   
-  console.log('Contenido del formulario:', formulario);
+  //console.log('Contenido del formulario:', formulario);
   const mascota = formulario.mascota;
-  console.log('mascota:', mascota);
+  //console.log('mascota:', mascota);
   return (
     <TouchableOpacity onPress={onPress} style={styles.itemContainer}>
       <View>

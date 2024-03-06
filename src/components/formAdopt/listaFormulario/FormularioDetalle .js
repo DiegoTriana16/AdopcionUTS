@@ -1,14 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import { TraerImagen } from '../../../utils/traerImagen';
 import { styles } from './ListaFormulario.styles';
 import { ButtonGroup, Input, Button } from 'react-native-elements';
 import { useFormik } from "formik"
 import { initialValues, validationSchema } from "./formulario.data"
+import { Picker } from '@react-native-picker/picker';
 
 const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
 
-  const estadosSolicitud = ['En estudio', 'Aprobado', 'Rechazado', 'Mascota no Disponible'];
+  const opciones = ['En estudio', 'Aprobado', 'Rechazado', 'Mascota no Disponible'];
+  const [estadoSeleccionado, setEstadoSeleccionado] = useState(formularioSeleccionado.estado);
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -35,7 +37,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
         Toast.show({
           type: "error",
           position: "bottom",
-          text1: "Error al guardar el formulario",
+          text1: "Error al actualizar el formulario",
         });
       }
     }
@@ -46,7 +48,11 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
     formik.handleSubmit();
   }, [formik]);
 
-
+  const handleEstadoChange = (valor) => {
+    setEstadoSeleccionado(valor);
+    formik.setFieldValue('estado', valor)
+    // Puedes realizar cualquier acción adicional aquí según sea necesario
+  };
 
   const mascota = formularioSeleccionado.pet;
   return (
@@ -118,26 +124,49 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
             <Text style={styles.fieldValue}>{formularioSeleccionado?.queHacesConMascotasEnViaje}</Text>
 
             {/* Estado Solicitud */}
-            <Text style={styles.fieldLabel}>Estado Solicitud:</Text>
+            <Text style={styles.fieldLabel}>Estado Actual de la Solicitud:</Text>
             <Text style={styles.fieldValue}>{formularioSeleccionado?.estado}</Text>
 
             <Text style={styles.fieldLabel}>recomendaciones:</Text>
             <Input
+              multiline
+              numberOfLines={4}
               placeholder="recomendaciones"
               containerStyle={styles.input}
+              inputContainerStyle={styles.textInputContainer}
               onChangeText={(text) => formik.setFieldValue("recomendaciones", text)}
               errorMessage={formik.errors.recomendaciones}
             />
 
             <Text style={styles.fieldLabel}>Observaciones:</Text>
             <Input
+              multiline
+              numberOfLines={4}
               placeholder="observaciones"
               containerStyle={styles.input}
+              inputContainerStyle={styles.textInputContainer}
               onChangeText={(text) => formik.setFieldValue("observaciones", text)}
               errorMessage={formik.errors.observaciones}
             />
           </View>
 
+          <Text>Estado actual: {estadoSeleccionado}</Text>
+          
+          <Picker
+            style={styles.picker}
+            itemStyle={styles.pickerItem}
+            selectedValue={estadoSeleccionado}
+            onValueChange={(itemValue) => handleEstadoChange(itemValue)}
+          >
+            {opciones.map((opcion, index) => (
+              <Picker.Item
+                key={index}
+                label={opcion}
+                value={opcion}
+                style={styles.pickerItem}
+              />
+            ))}
+          </Picker>
 
 
           <TouchableOpacity
@@ -146,7 +175,6 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
           >
             <Text style={styles.closeModalButtonText}>Actualizar Formulario</Text>
           </TouchableOpacity>
-
 
           <TouchableOpacity
             style={styles.closeModalButton}
