@@ -6,8 +6,20 @@ import { ButtonGroup, Input, Button } from 'react-native-elements';
 import { useFormik } from "formik"
 import { initialValues, validationSchema } from "./formulario.data"
 import { Picker } from '@react-native-picker/picker';
+import Toast from "react-native-toast-message";
+import { useNavigation } from "@react-navigation/native"
+import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs, updateDoc } from 'firebase/firestore'
+import { screen } from '../../../utils';
+import { initFirebase } from '../../../utils/firebase';
+
 
 const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
+
+  const navigation = useNavigation();
+  const goToFormulario = () => {
+    navigation.navigate(screen.formulario.formulario)
+  }
+  const db = getFirestore(initFirebase);
 
   const opciones = ['En estudio', 'Aprobado', 'Rechazado', 'Mascota no Disponible'];
   const [estadoSeleccionado, setEstadoSeleccionado] = useState(formularioSeleccionado.estado);
@@ -18,20 +30,21 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        console.log('el valor magico es:')
-        console.log(formValue)
 
-        /* formValue.fechaRevision = new Date();
- 
-         console.log(formValue)
-         const dataFirebase = { ...formValue, isValid: true, estado: 'En estudio', mascota: pet };
-         const docRef = await addDoc(collection(db, 'formularioTest'), dataFirebase);
-         const nuevoFormularioId = docRef.id;
-         dataFirebase.formularioId = nuevoFormularioId;
-         await updateDoc(docRef, dataFirebase);
-         console.log('guardado con exito')
-         console.log(dataFirebase)
-         goToFormulario();*/
+        const formularioId = formularioSeleccionado.formularioId;
+        const formularioRef = doc(db, 'formularioTest', formularioId);
+
+       
+        await updateDoc(formularioRef, {
+          fechaRevision: new Date(),
+          observaciones: formValue.observaciones,
+          recomendaciones: formValue.recomendaciones,
+          estado: formValue.estado,
+        });
+
+        console.log('Formulario actualizado con éxito:', formularioSeleccionado);
+
+        goToFormulario();
 
       } catch (error) {
         Toast.show({
@@ -151,7 +164,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
           </View>
 
           <Text>Estado actual: {estadoSeleccionado}</Text>
-          
+
           <Picker
             style={styles.picker}
             itemStyle={styles.pickerItem}
@@ -167,7 +180,6 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
               />
             ))}
           </Picker>
-
 
           <TouchableOpacity
             style={styles.closeModalButton}

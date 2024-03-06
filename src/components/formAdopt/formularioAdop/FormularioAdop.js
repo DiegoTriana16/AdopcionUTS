@@ -74,7 +74,7 @@ export function FormularioAdop(props) {
     onSubmit: async (formValue) => {
       try {
 
-        formValue.fecha = new Date();
+        formValue.fechaCreacion = new Date();
         formValue.cedula = datosUsuario.cedula;
         formValue.nombreApellido = datosUsuario.nombre;
         formValue.celular = datosUsuario.telefono;
