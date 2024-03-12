@@ -14,10 +14,10 @@ import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs, u
 export function FormularioAdop(props) {
 
   const navigation = useNavigation();
-  const { pet } = props;
   const goToFormulario = () => {
-    navigation.navigate(screen.formulario.formulario)
+    navigation.navigate('FormularioScreen')
   }
+  const { pet } = props;
 
   const { uid, displayName, email } = getAuth().currentUser
   const db = getFirestore(initFirebase);

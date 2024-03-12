@@ -14,7 +14,6 @@ export function NuevoFormularioScreen({ route }) {
   console.log('LOG pet:', pet);
   const fotoUrl = pet.foto;
 
-  // Imprime para verificar la URL de la foto
   console.log('LOG pet?.foto:', fotoUrl);
 
   return (

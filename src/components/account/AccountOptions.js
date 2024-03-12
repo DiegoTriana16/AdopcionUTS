@@ -60,7 +60,7 @@ function getMenuOptions(selectedComponent) {
             iconColorRight: "#ccc",
             onPress: ()=> selectedComponent("displayName") 
         },
-        {
+       /* {
             title: "Cambiar Email",
             iconType: "material-community",
             iconNameLeft: "at",
@@ -68,7 +68,7 @@ function getMenuOptions(selectedComponent) {
             iconNameRight: "chevron-right",
             iconColorRight: "#ccc",
             onPress: ()=> selectedComponent("email")
-        },
+        },*/
         {
             title: "Cambiar Contrasena",
             iconType: "material-community",

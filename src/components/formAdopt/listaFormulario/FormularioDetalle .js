@@ -17,8 +17,15 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
 
   const navigation = useNavigation();
   const goToFormulario = () => {
-    navigation.navigate(screen.formulario.formulario)
-  }
+    // Cierra el modal
+    closeModal();
+  
+    // Navega a la pantalla FormularioScreen después de un breve retraso
+    setTimeout(() => {
+      navigation.navigate('FormularioScreen');
+    }, 100);
+  };
+
   const db = getFirestore(initFirebase);
 
   const opciones = ['En estudio', 'Aprobado', 'Rechazado', 'Mascota no Disponible'];
@@ -33,8 +40,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
 
         const formularioId = formularioSeleccionado.formularioId;
         const formularioRef = doc(db, 'formularioTest', formularioId);
-
-       
+  
         await updateDoc(formularioRef, {
           fechaRevision: new Date(),
           observaciones: formValue.observaciones,
@@ -45,6 +51,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
         console.log('Formulario actualizado con éxito:', formularioSeleccionado);
 
         goToFormulario();
+        console.log('Formulario actualizado:');
 
       } catch (error) {
         Toast.show({
@@ -64,7 +71,6 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
   const handleEstadoChange = (valor) => {
     setEstadoSeleccionado(valor);
     formik.setFieldValue('estado', valor)
-    // Puedes realizar cualquier acción adicional aquí según sea necesario
   };
 
   const mascota = formularioSeleccionado.pet;
@@ -163,7 +169,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
             />
           </View>
 
-          <Text>Estado actual: {estadoSeleccionado}</Text>
+          <Text>Formulario estado: {estadoSeleccionado}</Text>
 
           <Picker
             style={styles.picker}
