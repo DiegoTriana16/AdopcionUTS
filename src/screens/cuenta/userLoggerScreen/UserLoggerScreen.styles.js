@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     marginTop: 30,
     paddingVertical: 10,
     borderRadius: 0,
-    backgroundColor: "#ffff",
+    backgroundColor: "#E05E5C",
     borderTopWidth: 1,
     borderTopColor: "#e3e3e3",
     borderBottomWidth: 1,
@@ -17,6 +17,6 @@ export const styles = StyleSheet.create({
   },
 
   btnTitles: {
-    color: "#00a680",
+    color: "#e3e3e3",
   },
 });
