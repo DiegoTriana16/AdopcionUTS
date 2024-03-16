@@ -4,20 +4,27 @@ import {
   SimpleLineIcons,
   MaterialIcons,
   FontAwesome5,
-  AntDesign 
+  AntDesign
 } from "@expo/vector-icons";
 import { Image, SafeAreaView, Text, View } from "react-native";
 import FormularioAnimal from "../../screens/Formulario/Form";
 import { FormularioScreen } from "../../screens/Formulario/FormularioScreen";
-import {CuentaScreen} from "../../screens/cuenta/CuentaScreen"
-
+import { CuentaScreen } from "../../screens/cuenta/CuentaScreen"
+import { getAuth } from "firebase/auth";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigation = () => {
+
+  const currentUser = getAuth().currentUser;
+  const email = currentUser.email;
+  const displayName = currentUser.displayName;
+
+
+
   return (
     <Drawer.Navigator
-    
+
       drawerContent={(props) => {
         return (
           <SafeAreaView>
@@ -48,7 +55,7 @@ const DrawerNavigation = () => {
                   color: "#111"
                 }}
               >
-                Isabella Joanna
+                {displayName}
               </Text>
               <Text
                 style={{
@@ -56,7 +63,7 @@ const DrawerNavigation = () => {
                   color: "#111"
                 }}
               >
-                Product Manager
+                {email}
               </Text>
             </View>
             <DrawerItemList {...props} />
