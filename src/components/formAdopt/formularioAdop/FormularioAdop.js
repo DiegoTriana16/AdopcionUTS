@@ -191,10 +191,11 @@ export function FormularioAdop(props) {
       <Text>¿Vives en casa o apartamento?</Text>
 
       <ButtonGroup
-        selectedIndex={formik.values.vivesCasaApartamento === 'Casa' ? 0 : 1}  // 0 para Casa, 1 para Apartamento
+        selectedIndex={formik.values.vivesCasaApartamento === 'Casa' ? 0 : 1} 
         buttons={['Casa', 'Apartamento']}
         onPress={(selectedIndex) => formik.setFieldValue("vivesCasaApartamento", selectedIndex === 0 ? 'Casa' : 'Apartamento')}
         containerStyle={{ marginTop: 10 }}
+        selectedButtonStyle={{ backgroundColor: '#E05E5C' }}
       />
 
       <Text>¿Permiten mascotas en tu lugar de vivienda?</Text>
@@ -204,6 +205,7 @@ export function FormularioAdop(props) {
         buttons={['Sí', 'No']}
         onPress={(selectedIndex) => formik.setFieldValue("permitenMascotas", selectedIndex === 0)}
         containerStyle={{ marginTop: 10 }}
+        selectedButtonStyle={{ backgroundColor: '#E05E5C' }}
       />
 
       <Input
@@ -222,6 +224,7 @@ export function FormularioAdop(props) {
         buttons={['Sí', 'No']}
         onPress={(selectedIndex) => formik.setFieldValue("familiarAlergico", selectedIndex === 0)}
         containerStyle={{ marginTop: 10 }}
+        selectedButtonStyle={{ backgroundColor: '#E05E5C' }}
       />
 
       <Text>SOBRE LAS MASCOTAS</Text>
@@ -232,6 +235,7 @@ export function FormularioAdop(props) {
         buttons={['Sí', 'No']}
         onPress={(selectedIndex) => formik.setFieldValue("experienciasMascotas", selectedIndex === 0)}
         containerStyle={{ marginTop: 10 }}
+        selectedButtonStyle={{ backgroundColor: '#E05E5C' }}
       />
 
       <Input

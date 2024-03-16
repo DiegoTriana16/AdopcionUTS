@@ -1,5 +1,5 @@
 import { Image, KeyboardAvoidingView, View } from "react-native";
-import { Input, Icon, Button } from "react-native-elements";
+import { Input, Icon, Button, ButtonGroup, Text } from "react-native-elements";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import { styles } from "./Form.Style";
@@ -23,7 +23,7 @@ function FormularioAnimal() {
   useFocusEffect(
     useCallback(() => {
       formik.resetForm()
-      
+
       return () => {
         // updateData(false);
       };
@@ -48,15 +48,15 @@ function FormularioAnimal() {
           <Input
             placeholder="Edad"
             containerStyle={styles.input}
-            rightIcon={<Icon type="material-community" name="at" iconStyle={styles.icon} />}
+            rightIcon={<Icon type="material-community" name="cake" iconStyle={styles.icon} />}
             onChangeText={(text) => formik.setFieldValue("edad", textToLowerCase(text))}
             errorMessage={formik.errors.edad}
           />
 
           <Input
-            placeholder="Raza"
+            placeholder="Raza de la mascota"
             containerStyle={styles.input}
-            rightIcon={<Icon type="material-community" name="at" iconStyle={styles.icon} />}
+            rightIcon={<Icon type="material-community" name="dog" iconStyle={styles.icon} />}
             onChangeText={(text) => formik.setFieldValue("raza", textToLowerCase(text))}
             errorMessage={formik.errors.raza}
           />
@@ -64,40 +64,43 @@ function FormularioAnimal() {
           <Input
             placeholder="Ubicacion"
             containerStyle={styles.input}
-            rightIcon={<Icon type="material-community" name="at" iconStyle={styles.icon} />}
+            rightIcon={<Icon type="material-community" name="map-marker" iconStyle={styles.icon} />}
             onChangeText={(text) => formik.setFieldValue("ubicacion", textToLowerCase(text))}
             errorMessage={formik.errors.ubicacion}
           />
 
-          <Input
-            placeholder="Genero"
-            containerStyle={styles.input}
-            rightIcon={<Icon type="material-community" name="at" iconStyle={styles.icon} />}
-            onChangeText={(text) => formik.setFieldValue("genero", textToLowerCase(text))}
-            errorMessage={formik.errors.genero}
+          <Text> genero de la mascota </Text>
+          <ButtonGroup
+            selectedIndex={formik.values.genero === 'femenino' ? 0 : 1}
+            buttons={['femenino', 'masculino']}
+            onPress={(selectedIndex) => formik.setFieldValue("genero", selectedIndex === 0 ? 'femenino' : 'masculino')}
+            containerStyle={{ marginTop: 10 }}
+            selectedButtonStyle={{ backgroundColor: '#E05E5C' }}
           />
 
           <Input
             placeholder="Descripcion"
             containerStyle={styles.input}
-            rightIcon={<Icon type="material-community" name="at" iconStyle={styles.icon} />}
+            rightIcon={<Icon type="material-community" name="image-text" iconStyle={styles.icon} />}
             onChangeText={(text) => formik.setFieldValue("descripcion", textToLowerCase(text))}
             errorMessage={formik.errors.descripcion}
           />
           <Input
-            placeholder="Tipo"
+            placeholder="Tipo de mascota"
             containerStyle={styles.input}
-            rightIcon={<Icon type="material-community" name="at" iconStyle={styles.icon} />}
+            rightIcon={<Icon type="material-community" name="cat" iconStyle={styles.icon} />}
             onChangeText={(text) => formik.setFieldValue("tipo", textToLowerCase(text))}
             errorMessage={formik.errors.descripcion}
           />
-          <Input
-            placeholder="Disponibilidad"
-            containerStyle={styles.input}
-            rightIcon={<Icon type="material-community" name="at" iconStyle={styles.icon} />}
-            onChangeText={(text) => formik.setFieldValue("disponibilidad", textToLowerCase(text))}
-            errorMessage={formik.errors.descripcion}
-          />
+          <View style={{ display: 'none' }}>
+            <Input
+              placeholder="Disponibilidad"
+              containerStyle={styles.input}
+              rightIcon={<Icon type="material-community" name="at" iconStyle={styles.icon} />}
+              onChangeText={(text) => formik.setFieldValue("disponibilidad", textToLowerCase(text))}
+              errorMessage={formik.errors.descripcion}
+            />
+          </View>
 
           {image && (
             <Image

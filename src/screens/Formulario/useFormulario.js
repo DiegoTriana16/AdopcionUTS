@@ -20,7 +20,7 @@ const useFormulario = (goToHome) => {
       try {
         await SubirImagenFirebase(image);
         const url = await getImages();
-        const mascota = { ...formValue, id: uuid(), foto: url };
+        const mascota = { ...formValue, id: uuid(), foto: url, disponibilidad: 'para adoptar' };
         const document = await addDoc(collection(db, "Animales"), mascota);
         resetForm({
           values: {

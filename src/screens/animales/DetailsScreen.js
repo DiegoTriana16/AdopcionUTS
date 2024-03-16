@@ -130,7 +130,7 @@ const style = StyleSheet.create({
     marginRight: 15
   },
   btn: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#E05E5C',
     flex: 1,
     height: 50,
     borderRadius: 12,
