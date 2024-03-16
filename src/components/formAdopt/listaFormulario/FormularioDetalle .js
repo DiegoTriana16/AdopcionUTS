@@ -13,13 +13,13 @@ import { screen } from '../../../utils';
 import { initFirebase } from '../../../utils/firebase';
 
 
-const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
+const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
 
   const navigation = useNavigation();
   const goToFormulario = () => {
     // Cierra el modal
     closeModal();
-  
+
     // Navega a la pantalla FormularioScreen después de un breve retraso
     setTimeout(() => {
       navigation.navigate('FormularioScreen');
@@ -27,6 +27,8 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
   };
 
   const db = getFirestore(initFirebase);
+
+  const evaluar = rol === "admin" ? true : false;
 
   const opciones = ['En estudio', 'Aprobado', 'Rechazado', 'Mascota no Disponible'];
   const [estadoSeleccionado, setEstadoSeleccionado] = useState(formularioSeleccionado.estado);
@@ -40,7 +42,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
 
         const formularioId = formularioSeleccionado.formularioId;
         const formularioRef = doc(db, 'formularioTest', formularioId);
-  
+
         await updateDoc(formularioRef, {
           fechaRevision: new Date(),
           observaciones: formValue.observaciones,
@@ -146,53 +148,55 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal }) => {
             <Text style={styles.fieldLabel}>Estado Actual de la Solicitud:</Text>
             <Text style={styles.fieldValue}>{formularioSeleccionado?.estado}</Text>
 
-            <Text style={styles.fieldLabel}>recomendaciones:</Text>
-            <Input
-              multiline
-              numberOfLines={4}
-              placeholder="recomendaciones"
-              containerStyle={styles.input}
-              inputContainerStyle={styles.textInputContainer}
-              onChangeText={(text) => formik.setFieldValue("recomendaciones", text)}
-              errorMessage={formik.errors.recomendaciones}
-            />
+            {evaluar && (
+              <View>
 
-            <Text style={styles.fieldLabel}>Observaciones:</Text>
-            <Input
-              multiline
-              numberOfLines={4}
-              placeholder="observaciones"
-              containerStyle={styles.input}
-              inputContainerStyle={styles.textInputContainer}
-              onChangeText={(text) => formik.setFieldValue("observaciones", text)}
-              errorMessage={formik.errors.observaciones}
-            />
+                <Text style={styles.fieldLabel}>recomendaciones:</Text>
+                <Input
+                  multiline
+                  numberOfLines={4}
+                  placeholder="recomendaciones"
+                  containerStyle={styles.input}
+                  inputContainerStyle={styles.textInputContainer}
+                  onChangeText={(text) => formik.setFieldValue("recomendaciones", text)}
+                  errorMessage={formik.errors.recomendaciones}
+                />
+                <Text style={styles.fieldLabel}>Observaciones:</Text>
+                <Input
+                  multiline
+                  numberOfLines={4}
+                  placeholder="observaciones"
+                  containerStyle={styles.input}
+                  inputContainerStyle={styles.textInputContainer}
+                  onChangeText={(text) => formik.setFieldValue("observaciones", text)}
+                  errorMessage={formik.errors.observaciones}
+                />
+                <Text>Formulario Nuevo estado: {estadoSeleccionado}</Text>
+
+                <Picker
+                  style={styles.picker}
+                  itemStyle={styles.pickerItem}
+                  selectedValue={estadoSeleccionado}
+                  onValueChange={(itemValue) => handleEstadoChange(itemValue)}
+                >
+                  {opciones.map((opcion, index) => (
+                    <Picker.Item
+                      key={index}
+                      label={opcion}
+                      value={opcion}
+                      style={styles.pickerItem}
+                    />
+                  ))}
+                </Picker>
+                <TouchableOpacity
+                  style={styles.closeModalButton}
+                  onPress={handleFormSubmit}
+                >
+                  <Text style={styles.closeModalButtonText}>Actualizar Formulario</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
-
-          <Text>Formulario estado: {estadoSeleccionado}</Text>
-
-          <Picker
-            style={styles.picker}
-            itemStyle={styles.pickerItem}
-            selectedValue={estadoSeleccionado}
-            onValueChange={(itemValue) => handleEstadoChange(itemValue)}
-          >
-            {opciones.map((opcion, index) => (
-              <Picker.Item
-                key={index}
-                label={opcion}
-                value={opcion}
-                style={styles.pickerItem}
-              />
-            ))}
-          </Picker>
-
-          <TouchableOpacity
-            style={styles.closeModalButton}
-            onPress={handleFormSubmit}
-          >
-            <Text style={styles.closeModalButtonText}>Actualizar Formulario</Text>
-          </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.closeModalButton}
