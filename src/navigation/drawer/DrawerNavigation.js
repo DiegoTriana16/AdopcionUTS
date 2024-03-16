@@ -101,7 +101,10 @@ const DrawerNavigation = () => {
         options={{
           drawerLabel: "Agregar Mascota",
           title: "Agregar Mascota",
-          drawerIcon: () => <FontAwesome5 name="cat" size={24} color="#808080" />
+          drawerIcon: () => <FontAwesome5 name="cat" size={24} color="#808080" />,
+          drawerItemStyle: {
+            display: email === "test@test.com" ? "flex" : "none"
+          }
         }}
         component={FormularioAnimal}
       />
