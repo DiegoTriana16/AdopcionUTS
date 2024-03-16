@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 5,
         padding: 10,
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop:0,
+        marginBottom:0,
       },
       itemContainer: {
         flexDirection: 'row',
@@ -61,33 +61,56 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         marginBottom: 10,
       },
-      closeModalButton: {
-        marginTop: 20,
-        padding: 10,
-        backgroundColor: "#000ba6",
-        borderRadius: 5,
-        alignSelf: "center",
-      },
-      closeModalButtonText: {
-        color: "white",
-        fontSize: 16,
-        fontWeight: "bold",
-      },
       formularioTitle: {
         fontSize: 24,
         fontWeight: "bold",
-        color: "#000", // Puedes ajustar el color según tu preferencia
+        color: "#000", 
         marginBottom: 15,
+        textAlign: "center",
       },
       imageContainer: {
         alignItems: 'center',
         marginBottom: 20,
       },
       formDetailsContainer: {
-        paddingHorizontal: 20, // Puedes ajustar el espaciado horizontal según sea necesario
-        marginTop: 10, // Puedes ajustar el espaciado superior según sea necesario
+        paddingHorizontal: 20, 
+        marginTop: 10, 
       },
-
-
+      fieldLabel: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        color: '#000000', // Puedes ajustar el color según tus preferencias
+      },
+      fieldValue: {
+        fontSize: 16,
+        marginBottom: 10,
+        color: '#333', // Puedes ajustar el color según tus preferencias
+      },
+      closeModalButton: {
+        backgroundColor: '#E05E5C',
+        padding: 10,
+        borderRadius: 5,
+        alignSelf: 'center',
+        marginTop: 20,
+      },
+      closeModalButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      picker: {
+        height: 50,
+        width: '100%',
+        backgroundColor: '#fafafa',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#',
+        color: 'black',
+      },
+      pickerItem: {
+        color: 'black',
+        fontSize: 20,
+      },
     
 });

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export const styles = StyleSheet.create({
 
     content: {
-        marginHorizontal : 30,
+        marginHorizontal: 30,
     },
     image: {
         resizeMode: "contain",
@@ -17,13 +17,24 @@ export const styles = StyleSheet.create({
         marginBottom: 10,
         textAlign: "center"
     },
-    descripcion:{
+    descripcion: {
         textAlign: "center",
         marginBottom: 20,
     },
-    buttonStyle:{
+    buttonStyle: {
         backgroundColor: "#000ba6"
+    },
+    imageContainer: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    tituloStyle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 10,
+        marginBottom: 20,
+        // Puedes agregar más estilos según tus preferencias
     }
-
 
 });

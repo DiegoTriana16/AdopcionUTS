@@ -15,7 +15,7 @@ export function LogginScreen() {
   return (
     <View style={styles.contentLogin}>
       <Image
-        source={require("../../../../assets/img/perro-flor.jpg")}
+        source={require("../../../../assets/img/No-compres.png")}
         style={styles.image}
       />
       <View style={styles.content}>

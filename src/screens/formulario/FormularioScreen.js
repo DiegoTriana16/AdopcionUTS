@@ -10,7 +10,7 @@ export function FormularioScreen() {
   const navigation = useNavigation();
 
   const goToNuevoFormulario = () => {
-    navigation.navigate(screen.formulario.nuevoFormulario)
+    navigation.navigate(screen.animales.home)
   }
 
 
@@ -22,9 +22,9 @@ export function FormularioScreen() {
         </Text>
         <ListaFormulario />
         <Button
-          title="Nuevo Formulario"
+          title="Nueva Adopcion"
           onPress={goToNuevoFormulario}
-          buttonStyle={{ backgroundColor: '#3498db', borderRadius: 8, marginTop: 20 }}
+          buttonStyle={{ backgroundColor: '#E05E5C', borderRadius: 8, marginTop: 20 }}
           titleStyle={{ fontWeight: 'bold' }}
         />
       </View>

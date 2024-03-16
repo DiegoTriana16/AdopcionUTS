@@ -16,12 +16,10 @@ export function initialValues() {
         queHacesConMascotasEnViaje: '',
         observaciones: '',
         recomendaciones: '',
-        fecha: '',
         vivesCasaApartamento: "Casa",
         permitenMascotas: false,
         familiarAlergico: false,
         experienciasMascotas: false,
-        fecha: 'prueba',
     };
 }
 

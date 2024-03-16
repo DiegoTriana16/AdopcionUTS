@@ -9,15 +9,15 @@ import { getAuth } from "firebase/auth";
 import { initFirebase } from '../../../utils/firebase';
 import { useNavigation } from "@react-navigation/native"
 import { screen } from '../../../utils';
-import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs } from 'firebase/firestore'
+import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs, updateDoc } from 'firebase/firestore'
 
-export function FormularioAdop() {
+export function FormularioAdop(props) {
 
   const navigation = useNavigation();
-
   const goToFormulario = () => {
-    navigation.navigate(screen.formulario.formulario)
+    navigation.navigate('FormularioScreen')
   }
+  const { pet } = props;
 
   const { uid, displayName, email } = getAuth().currentUser
   const db = getFirestore(initFirebase);
@@ -60,7 +60,7 @@ export function FormularioAdop() {
         },
         {
           text: "Continuar",
-          onPress: () => formik.handleSubmit(), // Llama a la función de manejo del envío del formulario
+          onPress: () => formik.handleSubmit(),
         },
       ]
     );
@@ -74,16 +74,20 @@ export function FormularioAdop() {
     onSubmit: async (formValue) => {
       try {
 
+        formValue.fechaCreacion = new Date();
         formValue.cedula = datosUsuario.cedula;
         formValue.nombreApellido = datosUsuario.nombre;
         formValue.celular = datosUsuario.telefono;
         formValue.email = datosUsuario.email;
 
         console.log(formValue)
-        const dataFirebase = { ...formValue, isValid: true, estado: 'progress', mascota: '' };
-        addDoc(collection(db, 'formularioTest'), dataFirebase);
-        console.log(dataFirebase)
+        const dataFirebase = { ...formValue, isValid: true, estado: 'En estudio', mascota: pet };
+        const docRef = await addDoc(collection(db, 'formularioTest'), dataFirebase);
+        const nuevoFormularioId = docRef.id;
+        dataFirebase.formularioId = nuevoFormularioId;
+        await updateDoc(docRef, dataFirebase);
         console.log('guardado con exito')
+        console.log(dataFirebase)
         goToFormulario();
 
       } catch (error) {

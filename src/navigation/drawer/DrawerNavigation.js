@@ -3,12 +3,13 @@ import HomeScreen from "../../screens/animales/HomeScreen";
 import {
   SimpleLineIcons,
   MaterialIcons,
-  FontAwesome5
+  FontAwesome5,
+  AntDesign 
 } from "@expo/vector-icons";
 import { Image, SafeAreaView, Text, View } from "react-native";
 import FormularioAnimal from "../../screens/Formulario/Form";
 import { FormularioScreen } from "../../screens/Formulario/FormularioScreen";
-
+import {CuentaScreen} from "../../screens/cuenta/CuentaScreen"
 
 
 const Drawer = createDrawerNavigator();
@@ -93,7 +94,7 @@ const DrawerNavigation = () => {
         options={{
           drawerLabel: "Agregar Mascota",
           title: "Agregar Mascota",
-          drawerIcon: () => <FontAwesome5 name="cat" size={24} color="black" />
+          drawerIcon: () => <FontAwesome5 name="cat" size={24} color="#808080" />
         }}
         component={FormularioAnimal}
       />
@@ -101,11 +102,20 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         name="FormularioScreen"
         options={{
-          drawerLabel: "Listar Formulario",
+          drawerLabel: "Lista Formularios",
           title: "Listar Formulario",
-          drawerIcon: () => <MaterialIcons name="timer" size={20} color="#808080" />
+          drawerIcon: () => <AntDesign name="filetext1" size={20} color="#808080" />
         }}
         component={FormularioScreen}
+      />
+      <Drawer.Screen
+        name="Cuenta"
+        options={{
+          drawerLabel: "Cuenta",
+          title: "Cuenta",
+          drawerIcon: () => <AntDesign name="user" size={20} color="#808080" />
+        }}
+        component={CuentaScreen}
       />
     </Drawer.Navigator>
     
