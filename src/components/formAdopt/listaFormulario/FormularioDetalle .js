@@ -17,13 +17,8 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
 
   const navigation = useNavigation();
   const goToFormulario = () => {
-    // Cierra el modal
+    
     closeModal();
-
-    // Navega a la pantalla FormularioScreen después de un breve retraso
-    setTimeout(() => {
-      navigation.navigate('FormularioScreen');
-    }, 100);
   };
 
   const db = getFirestore(initFirebase);
@@ -42,18 +37,38 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
 
         const formularioId = formularioSeleccionado.formularioId;
         const formularioRef = doc(db, 'formularioTest', formularioId);
-
+        console.log("estado:", formValue?.estado)
         await updateDoc(formularioRef, {
           fechaRevision: new Date(),
           observaciones: formValue.observaciones,
           recomendaciones: formValue.recomendaciones,
           estado: formValue.estado,
         });
+        
+
+       /* if (formValue.estado === "Aprobado")
+        {
+          console.log("hrllo there")
+          const moscotaId = formularioSeleccionado.mascota.id;
+          console.log("moscotaId", moscotaId)
+          const mascotaRef = doc(db, 'Animales', moscotaId);
+          await updateDoc(mascotaRef, {
+            estado: 'adoptado'
+          });
+
+        }*/
+
+
 
         console.log('Formulario actualizado con éxito:', formularioSeleccionado);
+       
+        Toast.show({
+          type: "info",
+          position: "bottom",
+          text1: "Formulario actualizado con exito",
+        });
 
         goToFormulario();
-        console.log('Formulario actualizado:');
 
       } catch (error) {
         Toast.show({

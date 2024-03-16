@@ -4,7 +4,7 @@ import { getStorage, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useFormik } from "formik";
 import Toast from "react-native-toast-message";
 import { initialValues, validationSchema } from "./Formulario.data";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 import { useAnimalsContext } from "../../context/AnimalsContext";
 
@@ -20,8 +20,13 @@ const useFormulario = (goToHome) => {
       try {
         await SubirImagenFirebase(image);
         const url = await getImages();
-        const mascota = { ...formValue, id: uuid(), foto: url, disponibilidad: 'para adoptar' };
+        const mascota = { ...formValue, foto: url, disponibilidad: 'para adoptar' };
         const document = await addDoc(collection(db, "Animales"), mascota);
+        const documentId = document.id;
+        mascota.id = documentId;
+        const docRef = doc(db, "Animales", documentId);
+        await updateDoc(docRef, mascota);
+
         resetForm({
           values: {
             nombre: "",

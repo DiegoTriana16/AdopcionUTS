@@ -6,7 +6,7 @@ export function initialValues() {
     edad: "",
     raza: "",
     ubicacion: "",
-    genero: "",
+    genero: "masculino",
     descripcion: "",
     tipo: "",
     disponibilidad: ""
