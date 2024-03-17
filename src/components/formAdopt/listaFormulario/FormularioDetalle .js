@@ -46,7 +46,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
         });
         
 
-       /* if (formValue.estado === "Aprobado")
+       if (formValue.estado === "Aprobado")
         {
           console.log("hrllo there")
           const moscotaId = formularioSeleccionado.mascota.id;
@@ -56,7 +56,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
             estado: 'adoptado'
           });
 
-        }*/
+        }
 
 
 
