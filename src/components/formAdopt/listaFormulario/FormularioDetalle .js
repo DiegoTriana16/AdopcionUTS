@@ -11,14 +11,22 @@ import { useNavigation } from "@react-navigation/native"
 import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs, updateDoc } from 'firebase/firestore'
 import { screen } from '../../../utils';
 import { initFirebase } from '../../../utils/firebase';
+import { CommonActions } from '@react-navigation/native';
 
 
 const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
 
   const navigation = useNavigation();
-  const goToFormulario = () => {
-    
+  const goToFormulario = () => {    
     closeModal();
+  };
+  const goToNuevoFormulario = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'FormularioScreen' }],
+      })
+    );
   };
 
   const db = getFirestore(initFirebase);
@@ -66,7 +74,8 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
           text1: "Formulario actualizado con exito",
         });
 
-        goToFormulario();
+        //goToFormulario();
+        goToNuevoFormulario();
 
       } catch (error) {
         Toast.show({

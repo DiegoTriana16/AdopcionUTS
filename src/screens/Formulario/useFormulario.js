@@ -7,10 +7,12 @@ import { initialValues, validationSchema } from "./Formulario.data";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 import { useAnimalsContext } from "../../context/AnimalsContext";
+import { useNavigation } from "@react-navigation/native";
 
 const useFormulario = (goToHome) => {
   const [image, setImage] = useState(null);
   const { updateData, isData } = useAnimalsContext();
+  const navigation = useNavigation();
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -39,12 +41,16 @@ const useFormulario = (goToHome) => {
             disponibilidad: ""
           }
         });
+        
+        goToHome();
 
         Toast.show({
           type: "success",
           position: "top",
           text1: "Agregado correctamente"
         });
+
+
       } catch (error) {
         Toast.show({
           type: "error",

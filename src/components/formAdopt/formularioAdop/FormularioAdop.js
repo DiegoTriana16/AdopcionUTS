@@ -10,6 +10,7 @@ import { initFirebase } from '../../../utils/firebase';
 import { useNavigation } from "@react-navigation/native"
 import { screen } from '../../../utils';
 import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs, updateDoc } from 'firebase/firestore'
+import { CommonActions } from '@react-navigation/native';
 
 export function FormularioAdop(props) {
 
