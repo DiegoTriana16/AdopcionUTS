@@ -58,8 +58,6 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
 
         }
 
-
-
         console.log('Formulario actualizado con éxito:', formularioSeleccionado);
        
         Toast.show({

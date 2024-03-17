@@ -112,7 +112,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="account"
           iconStyle={styles.icon}
         />
         onChangeText={() => formik.setFieldValue("nombreApellido", datosUsuario.nombre)}
@@ -127,7 +127,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="numeric"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("cedula", datosUsuario.cedula)}
@@ -142,7 +142,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="phone"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("celular", datosUsuario.telefono)}
@@ -156,7 +156,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="map-marker"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("direccion", text)}
@@ -168,7 +168,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="briefcase"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("Profesión", text)}
@@ -253,7 +253,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="dog-service"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("tieneOtrasMascotas", text)}
@@ -265,7 +265,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="home-circle"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("lugarDormirMascota", text)}
