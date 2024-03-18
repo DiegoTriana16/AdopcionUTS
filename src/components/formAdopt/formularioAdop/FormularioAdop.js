@@ -10,14 +10,25 @@ import { initFirebase } from '../../../utils/firebase';
 import { useNavigation } from "@react-navigation/native"
 import { screen } from '../../../utils';
 import { addDoc, collection, getFirestore, query, where, getDoc, doc, getDocs, updateDoc } from 'firebase/firestore'
+import { CommonActions } from '@react-navigation/native';
 
 export function FormularioAdop(props) {
 
   const navigation = useNavigation();
   const goToFormulario = () => {
-    navigation.navigate('FormularioScreen')
+    navigation.navigate('DrawerNavigation')
   }
   const { pet } = props;
+
+  const goToListFormulario = () => {
+
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'FormularioScreen' }],
+      })
+    );
+  };
 
   const { uid, displayName, email } = getAuth().currentUser
   const db = getFirestore(initFirebase);
@@ -66,6 +77,19 @@ export function FormularioAdop(props) {
     );
   };
 
+  const mostrarMensaje = () => {
+    Alert.alert(
+      "Gracias Por La Solicitud!",
+      "El formulario sera revisado y podria tomar algun tiempo, podras ver el estado de la solicitud en la seccion de Lista Formularios",
+      [
+        {
+          text: "Aceptar",
+          style: "cancel",
+        }
+      ]
+    );
+  };
+
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -86,8 +110,8 @@ export function FormularioAdop(props) {
         const nuevoFormularioId = docRef.id;
         dataFirebase.formularioId = nuevoFormularioId;
         await updateDoc(docRef, dataFirebase);
-        console.log('guardado con exito')
-        console.log(dataFirebase)
+        mostrarMensaje();
+        goToListFormulario();
         goToFormulario();
 
       } catch (error) {
@@ -112,7 +136,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="account"
           iconStyle={styles.icon}
         />
         onChangeText={() => formik.setFieldValue("nombreApellido", datosUsuario.nombre)}
@@ -127,7 +151,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="numeric"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("cedula", datosUsuario.cedula)}
@@ -142,7 +166,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="phone"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("celular", datosUsuario.telefono)}
@@ -156,7 +180,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="map-marker"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("direccion", text)}
@@ -168,7 +192,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="briefcase"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("Profesión", text)}
@@ -191,10 +215,11 @@ export function FormularioAdop(props) {
       <Text>¿Vives en casa o apartamento?</Text>
 
       <ButtonGroup
-        selectedIndex={formik.values.vivesCasaApartamento === 'Casa' ? 0 : 1}  // 0 para Casa, 1 para Apartamento
+        selectedIndex={formik.values.vivesCasaApartamento === 'Casa' ? 0 : 1}
         buttons={['Casa', 'Apartamento']}
         onPress={(selectedIndex) => formik.setFieldValue("vivesCasaApartamento", selectedIndex === 0 ? 'Casa' : 'Apartamento')}
         containerStyle={{ marginTop: 10 }}
+        selectedButtonStyle={{ backgroundColor: '#E05E5C' }}
       />
 
       <Text>¿Permiten mascotas en tu lugar de vivienda?</Text>
@@ -204,6 +229,7 @@ export function FormularioAdop(props) {
         buttons={['Sí', 'No']}
         onPress={(selectedIndex) => formik.setFieldValue("permitenMascotas", selectedIndex === 0)}
         containerStyle={{ marginTop: 10 }}
+        selectedButtonStyle={{ backgroundColor: '#E05E5C' }}
       />
 
       <Input
@@ -222,6 +248,7 @@ export function FormularioAdop(props) {
         buttons={['Sí', 'No']}
         onPress={(selectedIndex) => formik.setFieldValue("familiarAlergico", selectedIndex === 0)}
         containerStyle={{ marginTop: 10 }}
+        selectedButtonStyle={{ backgroundColor: '#E05E5C' }}
       />
 
       <Text>SOBRE LAS MASCOTAS</Text>
@@ -232,6 +259,7 @@ export function FormularioAdop(props) {
         buttons={['Sí', 'No']}
         onPress={(selectedIndex) => formik.setFieldValue("experienciasMascotas", selectedIndex === 0)}
         containerStyle={{ marginTop: 10 }}
+        selectedButtonStyle={{ backgroundColor: '#E05E5C' }}
       />
 
       <Input
@@ -249,7 +277,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="dog-service"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("tieneOtrasMascotas", text)}
@@ -261,7 +289,7 @@ export function FormularioAdop(props) {
         containerStyle={styles.input}
         rightIcon=<Icon
           type="material-community"
-          name="at"
+          name="home-circle"
           iconStyle={styles.icon}
         />
         onChangeText={(text) => formik.setFieldValue("lugarDormirMascota", text)}
@@ -280,7 +308,7 @@ export function FormularioAdop(props) {
 
 
       <Button
-        title="Generar Adopcion"
+        title="Generar Solicitud de Adopcion"
         containerStyle={styles.btnContainer}
         buttonStyle={styles.btn}
         onPress={mostrarAlerta}

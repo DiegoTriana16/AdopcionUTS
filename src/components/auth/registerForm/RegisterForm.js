@@ -71,7 +71,9 @@ export function RegisterForm() {
           email: formValue.email,
           rol: "user"
         });
-        navigation.navigate(screen.cuenta.cuenta);
+
+        navigation.navigate("DrawerNavigation");
+
       } catch (error) {
         Toast.show({
           type: "error",

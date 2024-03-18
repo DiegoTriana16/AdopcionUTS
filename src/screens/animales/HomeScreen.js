@@ -168,7 +168,7 @@ const Card = ({ pet, navigation }) => {
             >
               {pet?.nombre}
             </Text>
-            {pet.genero === "femenino" ? (
+            {pet.genero === "masculino" ? (
               <Icon name="gender-male" size={22} color="#cf69bf" />
             ) : (
               <Icon name="gender-female" size={22} color="#5087e6" />

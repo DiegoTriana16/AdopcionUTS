@@ -12,7 +12,8 @@ const FormularioItem = ({ formulario, onPress }) => {
     <TouchableOpacity onPress={onPress} style={styles.itemContainer}>
       <View>
         <Text style={styles.itemText}>Mascota nombre: {mascota?.nombre}</Text>
-        <Text style={styles.itemText}>tipo: {mascota?.tipo}</Text>
+        <Text style={styles.itemText}>Tipo: {mascota?.tipo}</Text>
+        <Text style={styles.itemText}>Correo: {formulario.email}</Text>
         <Text style={styles.itemText}>Estado: {formulario.estado}</Text>
       </View>
       <View style={styles.arrowContainer}>

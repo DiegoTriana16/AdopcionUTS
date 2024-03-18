@@ -4,6 +4,7 @@ import { ListItem, Icon, Text } from "react-native-elements"
 import { map, set } from "lodash"
 import { Modal } from "../../components"
 import { ChangeDisplayName } from "./changeDisplayName"
+import { ChangePassword } from './ChangePassword/ChangePassword' 
 
 export function AccountOptions() {
     
@@ -21,7 +22,7 @@ export function AccountOptions() {
             setrenderComponent(<Text>Cambiar email</Text>);
         }
         if (key === "password") {
-            setrenderComponent(<Text>Cambiar contrasena</Text>);
+            setrenderComponent(<ChangePassword onClose={onCloseOpenModal}/>);
         }
 
         onCloseOpenModal();

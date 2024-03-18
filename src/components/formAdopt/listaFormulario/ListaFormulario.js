@@ -15,14 +15,29 @@ export function ListaFormulario() {
   const [formularios, setFormularios] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [formularioSeleccionado, setFormularioSeleccionado] = useState(null);
+  const [roll, setRoll] = useState("user");
+  let usuario = null;
+  let rol = null;
+
+  const [datosUsuario, setDatosUsuario] = useState(null);
 
   useEffect(() => {
     buscarListaDeFormulario();
   }, []);
 
+  useEffect(() => {
+    buscarUsuarioPorEmail();
+  }, []);
+
   const buscarListaDeFormulario = async () => {
     try {
-      const userQuery = query(collection(db, 'formularioTest'), where('email', '==', email));
+      await buscarUsuarioPorEmail();
+
+      let userQuery = query(collection(db, 'formularioTest'), where('email', '==', email));
+      if (rol === "admin") {
+        userQuery = query(collection(db, 'formularioTest'));
+      }
+      
       const querySnapshot = await getDocs(userQuery);
 
       if (querySnapshot.size > 0) {
@@ -44,6 +59,26 @@ export function ListaFormulario() {
     setModalVisible(true);
   };
 
+  const buscarUsuarioPorEmail = async () => {
+    try {
+      const userQuery = query(collection(db, 'users'), where('email', '==', email));
+      const querySnapshot = await getDocs(userQuery);
+
+      if (querySnapshot.size > 0) {
+        idUsuario = querySnapshot.docs[0].id;
+        usuario = querySnapshot.docs[0].data();
+        rol = usuario?.rol;        
+        setDatosUsuario(usuario);
+        setRoll(rol);
+      } else {
+        console.log('Usuario no encontrado en Firestore');
+      }
+    } catch (error) {
+      console.error('Error al buscar el usuario:', error);
+      throw error;
+    }
+  };
+
   return (
     <ScrollView>
       {formularios.map(formulario => (
@@ -62,6 +97,7 @@ export function ListaFormulario() {
         <FormularioDetalle
           formularioSeleccionado={formularioSeleccionado}
           closeModal={() => setModalVisible(false)}
+          rol={roll}
         />
       </Modal>
     </ScrollView>
