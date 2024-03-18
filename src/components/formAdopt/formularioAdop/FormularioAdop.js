@@ -16,9 +16,19 @@ export function FormularioAdop(props) {
 
   const navigation = useNavigation();
   const goToFormulario = () => {
-    navigation.navigate('FormularioScreen')
+    navigation.navigate('DrawerNavigation')
   }
   const { pet } = props;
+
+  const goToListFormulario = () => {
+
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'FormularioScreen' }],
+      })
+    );
+  };
 
   const { uid, displayName, email } = getAuth().currentUser
   const db = getFirestore(initFirebase);
@@ -67,6 +77,19 @@ export function FormularioAdop(props) {
     );
   };
 
+  const mostrarMensaje = () => {
+    Alert.alert(
+      "Gracias Por La Solicitud!",
+      "El formulario sera revisado y podria tomar algun tiempo, podras ver el estado de la solicitud en la seccion de Lista Formularios",
+      [
+        {
+          text: "Aceptar",
+          style: "cancel",
+        }
+      ]
+    );
+  };
+
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -87,8 +110,8 @@ export function FormularioAdop(props) {
         const nuevoFormularioId = docRef.id;
         dataFirebase.formularioId = nuevoFormularioId;
         await updateDoc(docRef, dataFirebase);
-        console.log('guardado con exito')
-        console.log(dataFirebase)
+        mostrarMensaje();
+        goToListFormulario();
         goToFormulario();
 
       } catch (error) {
@@ -192,7 +215,7 @@ export function FormularioAdop(props) {
       <Text>¿Vives en casa o apartamento?</Text>
 
       <ButtonGroup
-        selectedIndex={formik.values.vivesCasaApartamento === 'Casa' ? 0 : 1} 
+        selectedIndex={formik.values.vivesCasaApartamento === 'Casa' ? 0 : 1}
         buttons={['Casa', 'Apartamento']}
         onPress={(selectedIndex) => formik.setFieldValue("vivesCasaApartamento", selectedIndex === 0 ? 'Casa' : 'Apartamento')}
         containerStyle={{ marginTop: 10 }}
@@ -285,7 +308,7 @@ export function FormularioAdop(props) {
 
 
       <Button
-        title="Generar Adopcion"
+        title="Generar Solicitud de Adopcion"
         containerStyle={styles.btnContainer}
         buttonStyle={styles.btn}
         onPress={mostrarAlerta}

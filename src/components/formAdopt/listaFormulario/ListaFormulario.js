@@ -34,7 +34,6 @@ export function ListaFormulario() {
       await buscarUsuarioPorEmail();
 
       let userQuery = query(collection(db, 'formularioTest'), where('email', '==', email));
-      //console.log('role:', rol);
       if (rol === "admin") {
         userQuery = query(collection(db, 'formularioTest'));
       }
