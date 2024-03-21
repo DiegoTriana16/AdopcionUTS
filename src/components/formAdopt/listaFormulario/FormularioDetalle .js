@@ -17,7 +17,7 @@ import { CommonActions } from '@react-navigation/native';
 const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
 
   const navigation = useNavigation();
-  const goToFormulario = () => {    
+  const goToFormulario = () => {
     closeModal();
   };
   const goToNuevoFormulario = () => {
@@ -32,10 +32,11 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
   const db = getFirestore(initFirebase);
 
   const evaluar = rol === "admin" ? true : false;
+  const mostrarMas = rol === "admin" || formularioSeleccionado.evaluado ? true : false;
 
   const opciones = ['En estudio', 'Aprobado', 'Rechazado', 'Mascota no Disponible'];
   const [estadoSeleccionado, setEstadoSeleccionado] = useState(formularioSeleccionado.estado);
-
+  const defaultValue = "en estudio";
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: validationSchema(),
@@ -51,12 +52,11 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
           observaciones: formValue.observaciones,
           recomendaciones: formValue.recomendaciones,
           estado: formValue.estado,
+          evaluado: true
         });
-        
 
-       if (formValue.estado === "Aprobado")
-        {
-          console.log("hrllo there")
+
+        if (formValue.estado === "Aprobado") {
           const moscotaId = formularioSeleccionado.mascota.id;
           console.log("moscotaId", moscotaId)
           const mascotaRef = doc(db, 'Animales', moscotaId);
@@ -67,7 +67,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
         }
 
         console.log('Formulario actualizado con éxito:', formularioSeleccionado);
-       
+
         Toast.show({
           type: "info",
           position: "bottom",
@@ -170,14 +170,14 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
             <Text style={styles.fieldLabel}>Estado Actual de la Solicitud:</Text>
             <Text style={styles.fieldValue}>{formularioSeleccionado?.estado}</Text>
 
-            {evaluar && (
+            {mostrarMas && (
               <View>
 
                 <Text style={styles.fieldLabel}>recomendaciones:</Text>
                 <Input
                   multiline
                   numberOfLines={4}
-                  placeholder="recomendaciones"
+                  placeholder={formularioSeleccionado?.recomendaciones ? formularioSeleccionado.recomendaciones : "recomendaciones"}
                   containerStyle={styles.input}
                   inputContainerStyle={styles.textInputContainer}
                   onChangeText={(text) => formik.setFieldValue("recomendaciones", text)}
@@ -187,7 +187,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
                 <Input
                   multiline
                   numberOfLines={4}
-                  placeholder="observaciones"
+                  placeholder={formularioSeleccionado?.observaciones ? formularioSeleccionado.observaciones : "observaciones"}
                   containerStyle={styles.input}
                   inputContainerStyle={styles.textInputContainer}
                   onChangeText={(text) => formik.setFieldValue("observaciones", text)}
@@ -198,7 +198,7 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
                 <Picker
                   style={styles.picker}
                   itemStyle={styles.pickerItem}
-                  selectedValue={estadoSeleccionado}
+                  selectedValue={estadoSeleccionado || defaultValue}
                   onValueChange={(itemValue) => handleEstadoChange(itemValue)}
                 >
                   {opciones.map((opcion, index) => (
@@ -210,12 +210,14 @@ const FormularioDetalle = ({ formularioSeleccionado, closeModal, rol }) => {
                     />
                   ))}
                 </Picker>
-                <TouchableOpacity
-                  style={styles.closeModalButton}
-                  onPress={handleFormSubmit}
-                >
-                  <Text style={styles.closeModalButtonText}>Actualizar Formulario</Text>
-                </TouchableOpacity>
+                {evaluar && (
+                  <TouchableOpacity
+                    style={styles.closeModalButton}
+                    onPress={handleFormSubmit}
+                  >
+                    <Text style={styles.closeModalButtonText}>Actualizar Formulario</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             )}
           </View>
